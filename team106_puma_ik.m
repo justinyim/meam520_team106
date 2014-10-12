@@ -95,20 +95,40 @@ oz = wc(3);
 % 2 - arm left, below
 % 3 - arm right, above
 % 4 - arm right, below
+th1_1 = NaN;
+th1_2 = NaN;
+
+th2_1 = NaN;
+th2_2 = NaN;
+th2_3 = NaN;
+th2_4 = NaN;
+
+th3_1 = NaN;
+th3_2 = NaN;
+th3_3 = NaN;
+th3_4 = NaN;
 
 
 %% INVERSE ORIENTATION
 % for a given wrist center, there are 2 solutions for orientation
 % given in section 2.5 of SHV
+th4_1 = NaN;
+th4_2 = NaN;
+
+th5_1 = NaN;
+th5_2 = NaN;
+
+th6_1 = NaN;
+th6_2 = NaN;
 
 
 %% OUTPUT SOLUTIONS
-th1 = [NaN 0];
-th2 = [NaN 0];
-th3 = [NaN 0];
-th4 = [NaN 0];
-th5 = [NaN 0];
-th6 = [NaN 0];
+th1 = [th1_1 th1_1 th1_1 th1_1 th1_2 th1_2 th1_2 th1_2];
+th2 = [th2_1 th2_2 th2_1 th2_2 th2_3 th2_4 th2_3 th2_4];
+th3 = [th3_1 th3_2 th3_1 th3_2 th3_3 th3_4 th3_3 th3_4];
+th4 = [th4_1 th4_1 th4_2 th4_2 th4_1 th4_1 th4_2 th4_2];
+th5 = [th5_1 th5_1 th5_2 th5_2 th5_1 th5_1 th5_2 th5_2];
+th6 = [th6_1 th6_1 th6_2 th6_2 th6_1 th6_1 th6_2 th6_2];
 
 
 %%
