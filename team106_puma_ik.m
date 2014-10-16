@@ -96,16 +96,21 @@ oz = wc(3);
 % 3 - arm right, above      t12 t23 t33     optional
 % 4 - arm right, below      t12 t24 t34     optional
 
-t11 = NaN;
-t12 = NaN;
+% left arm
+t11 = atan2(oy, ox) - atan2(b + d, sqrt(ox^2 + oy^2 - (b + d)^2));
 
 t21 = NaN;
 t22 = NaN;
-t23 = NaN;
-t24 = NaN;
 
 t31 = NaN;
 t32 = NaN;
+
+% right arm
+t12 = atan2(oy, ox) - atan2(-(b + d), -sqrt(ox^2 + oy^2 - (b + d)^2));
+
+t23 = NaN;
+t24 = NaN;
+
 t33 = NaN;
 t34 = NaN;
 
@@ -160,8 +165,11 @@ th6 = [t61 t61 t61 t61 t62 t62 t62 t62];
 %% FORMAT OUTPUT
 
 % Put all of the thetas into a column vector to return.
+
 % Sanitize outputs to make sure they are reachable
-thetas = team106_sanitize_outputs([th1; th2; th3; th4; th5; th6]);
+% thetas = team106_sanitize_outputs([th1; th2; th3; th4; th5; th6]);
+
+thetas = [th1; th2; th3; th4; th5; th6];
 
 % By the very end, each column of thetas should hold a set of joint angles
 % in radians that will put the PUMA's end-effector in the desired
