@@ -91,24 +91,65 @@ oz = wc(3);
 
 %% INVERSE POSITION
 % we have 4 solutions here:
-% 1 - arm left, above
-% 2 - arm left, below
-% 3 - arm right, above
-% 4 - arm right, below
+% 1 - arm left, below       t11 t21 t31
+% 2 - arm left, above       t11 t22 t32
+% 3 - arm right, below      t12 t23 t33     optional
+% 4 - arm right, above      t12 t24 t34     optional
+
+% left arm
+t11 = atan2(oy, ox) - atan2(b + d, sqrt(ox^2 + oy^2 - (b + d)^2));
+
+t21 = NaN;
+t22 = NaN;
+
+t31 = NaN;
+t32 = NaN;
+
+% right arm
+t12 = atan2(oy, ox) - atan2(-(b + d), -sqrt(ox^2 + oy^2 - (b + d)^2));
+
+t23 = NaN;
+t24 = NaN;
+
+t33 = NaN;
+t34 = NaN;
 
 
 %% INVERSE ORIENTATION
 % for a given wrist center, there are 2 solutions for orientation
 % given in section 2.5 of SHV
 
+ % Get the orientation of the 3rd joint, which is the same as the 6th
+    % joint if theta4/5/6 all are zero
+[~, x60, y60, z60] = puma_fk_kuchenbe(t11, t21, t31, 0, 0, 0);
+
+% construction rotation matrix from axis orientation info
+R30 = [(x60(1:3,2)-x60(1:3,1))/norm(x60(1:3,2)-x60(1:3,1))...
+       (y60(1:3,2)-y60(1:3,1))/norm(y60(1:3,2)-y60(1:3,1))...
+       (z60(1:3,2)-z60(1:3,1))/norm(z60(1:3,2)-z60(1:3,1))];
+   
+% calculate wrist contribution to orientation
+R36 = R30' * R;
+
+% Find euler angles using method in section 2.5
+[t41, t51, t61] = team106_inverse_euler_zyz(R36, 1);
+[t42, t52, t62] = team106_inverse_euler_zyz(R36, 2);
+
+t41 = t41 + pi/2;
+t61 = t61 - pi/2;
+t42 = t42 + pi/2;
+t62 = t62 - pi/2;
+
 
 %% OUTPUT SOLUTIONS
-th1 = [NaN 0];
-th2 = [NaN 0];
-th3 = [NaN 0];
-th4 = [NaN 0];
-th5 = [NaN 0];
-th6 = [NaN 0];
+% all eight solutions
+% by default they are NaN
+th1 = [t11 t11 t12 t12 t11 t11 t12 t12];
+th2 = [t21 t22 t23 t24 t21 t22 t23 t24];
+th3 = [t31 t32 t33 t34 t31 t32 t33 t34];
+th4 = [t41 t41 t41 t41 t42 t42 t42 t42];
+th5 = [t51 t51 t51 t51 t52 t52 t52 t52];
+th6 = [t61 t61 t61 t61 t62 t62 t62 t62];
 
 
 %%
@@ -123,8 +164,11 @@ th6 = [NaN 0];
 %% FORMAT OUTPUT
 
 % Put all of the thetas into a column vector to return.
+
 % Sanitize outputs to make sure they are reachable
-thetas = team106_sanitize_outputs([th1; th2; th3; th4; th5; th6]);
+% thetas = team106_sanitize_outputs([th1; th2; th3; th4; th5; th6]);
+
+thetas = [th1; th2; th3; th4; th5; th6];
 
 % By the very end, each column of thetas should hold a set of joint angles
 % in radians that will put the PUMA's end-effector in the desired
