@@ -91,10 +91,10 @@ oz = wc(3);
 
 %% INVERSE POSITION
 % we have 4 solutions here:
-% 1 - arm left, above       t11 t21 t31
-% 2 - arm left, below       t11 t22 t32
-% 3 - arm right, above      t12 t23 t33     optional
-% 4 - arm right, below      t12 t24 t34     optional
+% 1 - arm left, below       t11 t21 t31
+% 2 - arm left, above       t11 t22 t32
+% 3 - arm right, below      t12 t23 t33     optional
+% 4 - arm right, above      t12 t24 t34     optional
 
 % left arm
 t11 = atan2(oy, ox) - atan2(b + d, sqrt(ox^2 + oy^2 - (b + d)^2));
@@ -121,8 +121,7 @@ t34 = NaN;
 
  % Get the orientation of the 3rd joint, which is the same as the 6th
     % joint if theta4/5/6 all are zero
-[~, x60, y60, z60] = puma_fk_kuchenbe(a1, a2, d6, ...
-    theta1, theta2, d3, 0, 0, 0);
+[~, x60, y60, z60] = puma_fk_kuchenbe(t11, t21, t31, 0, 0, 0);
 
 % construction rotation matrix from axis orientation info
 R30 = [(x60(1:3,2)-x60(1:3,1))/norm(x60(1:3,2)-x60(1:3,1))...
