@@ -79,7 +79,7 @@ f = 2.5;
 
 
 %% FRAME 6 ORIENTATION MATRIX
-R = team_106_euler_forward(phi, theta, psi);
+R = team106_euler_forward(phi, theta, psi);
 
 
 %% WRIST CENTER LOCATION
@@ -96,6 +96,11 @@ oz = wc(3);
 % 3 - arm right, below      t12 t23 t33     optional
 % 4 - arm right, above      t12 t24 t34     optional
 
+thetas = nan(6,8);
+
+thetas(1:3,1:4) = team106_inverse_position(ox, oy, oz);
+thetas(1:3,5:8) = thetas(1:3,1:4);
+%{
 % left arm
 t11 = atan2(oy, ox) - atan2(b + d, sqrt(ox^2 + oy^2 - (b + d)^2));
 
@@ -113,6 +118,7 @@ t24 = NaN;
 
 t33 = NaN;
 t34 = NaN;
+%}
 
 
 %% INVERSE ORIENTATION
@@ -121,35 +127,37 @@ t34 = NaN;
 
  % Get the orientation of the 3rd joint, which is the same as the 6th
     % joint if theta4/5/6 all are zero
-[~, x60, y60, z60] = puma_fk_kuchenbe(t11, t21, t31, 0, 0, 0);
+for ii = 1:4
+    [~, x60, y60, z60] = puma_fk_kuchenbe(thetas(1,ii), thetas(2,ii), thetas(3,ii), 0, 0, 0);
 
-% construction rotation matrix from axis orientation info
-R30 = [(x60(1:3,2)-x60(1:3,1))/norm(x60(1:3,2)-x60(1:3,1))...
-       (y60(1:3,2)-y60(1:3,1))/norm(y60(1:3,2)-y60(1:3,1))...
-       (z60(1:3,2)-z60(1:3,1))/norm(z60(1:3,2)-z60(1:3,1))];
-   
-% calculate wrist contribution to orientation
-R36 = R30' * R;
+    % construction rotation matrix from axis orientation info
+    R30 = [(x60(1:3,2)-x60(1:3,1))/norm(x60(1:3,2)-x60(1:3,1))...
+           (y60(1:3,2)-y60(1:3,1))/norm(y60(1:3,2)-y60(1:3,1))...
+           (z60(1:3,2)-z60(1:3,1))/norm(z60(1:3,2)-z60(1:3,1))];
 
-% Find euler angles using method in section 2.5
-[t41, t51, t61] = team106_inverse_euler_zyz(R36, 1);
-[t42, t52, t62] = team106_inverse_euler_zyz(R36, 2);
+    % calculate wrist contribution to orientation
+    R36 = R30' * R;
 
-t41 = t41 + pi/2;
-t61 = t61 - pi/2;
-t42 = t42 + pi/2;
-t62 = t62 - pi/2;
+    % Find euler angles using method in section 2.5
+    [thetas(4,ii), thetas(5,ii), thetas(6,ii)] = team106_inverse_euler_zyz(R36, 1);
+    [thetas(4,ii+4), thetas(5,ii+4), thetas(6,ii+4)] = team106_inverse_euler_zyz(R36, 2);
+
+    thetas(4,[ii,ii+4]) = thetas(4,[ii,ii+4]) + pi;
+    thetas(6,[ii,ii+4]) = thetas(6,[ii,ii+4]) + pi;
+end
 
 
 %% OUTPUT SOLUTIONS
 % all eight solutions
 % by default they are NaN
+%{
 th1 = [t11 t11 t12 t12 t11 t11 t12 t12];
 th2 = [t21 t22 t23 t24 t21 t22 t23 t24];
 th3 = [t31 t32 t33 t34 t31 t32 t33 t34];
 th4 = [t41 t41 t41 t41 t42 t42 t42 t42];
 th5 = [t51 t51 t51 t51 t52 t52 t52 t52];
 th6 = [t61 t61 t61 t61 t62 t62 t62 t62];
+%}
 
 
 %%
@@ -168,7 +176,7 @@ th6 = [t61 t61 t61 t61 t62 t62 t62 t62];
 % Sanitize outputs to make sure they are reachable
 % thetas = team106_sanitize_outputs([th1; th2; th3; th4; th5; th6]);
 
-thetas = [th1; th2; th3; th4; th5; th6];
+%thetas = [th1; th2; th3; th4; th5; th6];
 
 % By the very end, each column of thetas should hold a set of joint angles
 % in radians that will put the PUMA's end-effector in the desired

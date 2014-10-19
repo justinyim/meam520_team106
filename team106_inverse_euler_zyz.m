@@ -1,11 +1,11 @@
 function [ phi, theta, psi ] = team106_inverse_euler_zyz( R, soln )
 % Radians
-    if (R(3,3) == 1)
+    if (abs(R(3,3) - 1) < eps)
         theta = 0;
         phi = 0;
         psi = atan2(R(2,1), R(1,1));
         
-    elseif (R(3,3) == -1)
+    elseif ((R(3,3) + 1) < eps)
         theta = pi;
         phi = 0;
         psi = -atan2(-R(2,1), -R(1,1));
