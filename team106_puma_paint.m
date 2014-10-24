@@ -17,7 +17,7 @@ home
 %% Definitions
 
 % Define team number.
-teamnumber = 100;
+teamnumber = 106;
 
 % Define student names.
 studentnames = 'First Name, Second Name, and Third Name';
@@ -25,7 +25,7 @@ studentnames = 'First Name, Second Name, and Third Name';
 % Initialize the function that calculates positions, orientations, and
 % colors by calling it once with no arguments.  It returns the duration of
 % the light painting in seconds.
-duration = team100_get_poc();
+duration = team106_get_poc();
 
 
 %% Choose duration
@@ -70,18 +70,18 @@ pumaLEDSet(0,0,0);
 % Get the position and orientation where the robot's end-effector should
 % start, as well as the color it should be when it gets there.  We ignore
 % the first returned value, which is the duration.
-[~, xs, ys, zs, phis, thetas, psis, rs, gs, bs] = team100_get_poc(tstart);
+[~, xs, ys, zs, phis, thetas, psis, rs, gs, bs] = team106_get_poc(tstart);
 
 % Get all possible solutions to the PUMA's full inverse kinematics for
 % placing frame 6 at the desired position and orientation.  The
 % returned variable allSolutions is a matrix where each of the six rows
 % corresponds to one of the PUMA's six joints, in order.  Each column
 % is a separate solution to the IK problem.  Angles are in radians.
-allSolutions = team100_puma_ik(xs, ys, zs, phis, thetas, psis);
+allSolutions = team106_puma_ik(xs, ys, zs, phis, thetas, psis);
     
 % Choose the best solution based on the robot's home position.  You may
 % want to change this if you prefer a different solution.
-thetastart = team100_choose_solution(allSolutions, thetahome);
+thetastart = team106_choose_solution(allSolutions, thetahome);
 
 % Calculate time needed to get from home pose to starting pose moving at
 % angular speed of 0.5 radians per second on the joint that has the
@@ -161,7 +161,7 @@ while(true)
     end
     
     % Get the position, orientation, and color for the LED at this time.
-    [~, x, y, z, phi, theta, psi, r, g, b] = team100_get_poc(thistory(i));
+    [~, x, y, z, phi, theta, psi, r, g, b] = team106_get_poc(thistory(i));
     
     % Set the LED to the desired color.
     pumaLEDSet(r, g, b)
@@ -171,10 +171,10 @@ while(true)
     % returned variable allSolutions is a matrix where each of the six rows
     % corresponds to one of the PUMA's six joints, in order.  Each column
     % is a separate solution to the IK problem.  Angles are in radians.
-    allSolutions = team100_puma_ik(x, y, z, phi, theta, psi);
+    allSolutions = team106_puma_ik(x, y, z, phi, theta, psi);
     
     % Choose the best solution based on the robot's current pose and other factors.
-    thetas = team100_choose_solution(allSolutions, thetahistory(i-1,:)');
+    thetas = team106_choose_solution(allSolutions, thetahistory(i-1,:)');
     
     % Check for any NaN values in the solution.
     if (any(isnan(thetas)))

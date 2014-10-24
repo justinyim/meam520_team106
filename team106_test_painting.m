@@ -26,7 +26,7 @@ GraphingTimeDelay = 0.05; % The length of time that Matlab should pause between 
 % Initialize the function that calculates positions, orientations, and
 % colors by calling it once with no arguments.  It returns the duration of
 % the light painting in seconds.
-duration = team100_get_poc();
+duration = team106_get_poc();
 
 % Create time vector.
 tstep = 0.1; % s
@@ -37,7 +37,7 @@ t = 0:tstep:duration;
 for i = 1:length(t)
     [~, ox_history(i), oy_history(i), oz_history(i), phi_history(i), ...
         theta_history(i), psi_history(i), r_history(i), g_history(i), ...
-        b_history(i)] = team100_get_poc(t(i));
+        b_history(i)] = team106_get_poc(t(i));
 end
 
 
@@ -74,14 +74,14 @@ for i = 1:length(ox_history)
     % Send the desired pose into the inverse kinematics to obtain the joint
     % angles that will place the PUMA's end-effector at this position and
     % orientation relative to frame 0.
-    allthetas = team100_puma_ik(ox, oy, oz, phi, theta, psi);
+    allthetas = team106_puma_ik(ox, oy, oz, phi, theta, psi);
     
     if (i == 1)
         % Pass in the home position as the current position.
-        thetas_history(i,:) = team100_choose_solution(allthetas, [0 0 0 0 -pi/2 0]')';
+        thetas_history(i,:) = team106_choose_solution(allthetas, [0 0 0 0 -pi/2 0]')';
     else        
         % Choose the solution to show.
-        thetas_history(i,:) = team100_choose_solution(allthetas, thetas_history(i-1,:))';
+        thetas_history(i,:) = team106_choose_solution(allthetas, thetas_history(i-1,:))';
     end
 
     % Plot the robot at this IK solution with the specified color.        
