@@ -1,4 +1,4 @@
-function thetas = team106_choose_solution(allSolutions, thetasnow)
+function thetasOut = team106_choose_solution(allSolutions, thetasnow)
 %% team106_choose_solution.m
 %
 % Chooses the best inverse kinematics solution from all of the solutions
@@ -44,10 +44,11 @@ limits = [-180 110;...
           -215 295];
 limits = limits.*(pi/180);
 
+
 %%
 % first wrap solutions with less than 360 range into range
 for ii = 1:size(allSolutions,2)
-    for jj = [1 2 3 5]
+    for jj = 1:6
         while (allSolutions(jj, ii) < limits(jj,1))
             allSolutions(jj, ii) = allSolutions(jj, ii) + 2*pi;
         end
@@ -60,21 +61,37 @@ end
 % now add solutions due to extra range for theta4/6
 temp1 = allSolutions;
 temp2 = allSolutions;
+temp3 = allSolutions;
+temp4 = allSolutions;
 
-temp1([4,6],:) = temp1([4,6],:) + 2*pi;
-temp2([4,6],:) = temp2([4,6],:) - 2*pi;
+temp1(4,:) = temp1(4,:) + 2*pi;
+temp2(4,:) = temp2(4,:) - 2*pi;
+temp1(6,:) = temp1(6,:) + 2*pi;
+temp2(6,:) = temp2(6,:) - 2*pi;
 
-allSolutions = [allSolutions temp1 temp2];
+% NaN solutions outside of limits
+thetas = team106_sanitize_outputs([allSolutions temp1 temp2 temp3 temp4]);
 
-
-%% NaN solutions outside of limits
-allSolutions = team106_sanitize_outputs(allSolutions);
-
-
-%% 
-
+% remove NaN columns
+thetas = thetas(:,all(~isnan(thetas)));
 
 
+%% Now evaluate distance metrics
+distanceMetric = @team106_distanceMetric_l2norm;
+% distanceMetric = @team106_distanceMetric_linfinitynorm;
+
+metricOut = zeros(size(thetas,2));
+for ii = 1:length(metricOut)
+    metricOut(ii) = distanceMetric(thetas(:,ii), thetasnow);
+end
+
+
+%% Finally choose the solution and return it
+n = metricOut == min(metricOut);
+thetasOut = thetas(:,n);
+
+
+%%
 % You will need to update this function so it chooses intelligently from
 % the provided solutions to choose the best one.
 %
@@ -87,6 +104,3 @@ allSolutions = team106_sanitize_outputs(allSolutions);
 % wraps around, there can be multiple ways for the robot to achieve the
 % same IK solution (the given angle as well as the given angle plus or
 % minus 2*pi*n). Be careful about this point.
-
-% For now, just return the last column of allSolutions.
-thetas = allSolutions(:,end);
