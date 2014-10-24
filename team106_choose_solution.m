@@ -1,5 +1,5 @@
-afunction thetas = team100_choose_solution(allSolutions, thetasnow)
-%% team100_choose_solution.m
+function thetas = team106_choose_solution(allSolutions, thetasnow)
+%% team106_choose_solution.m
 %
 % Chooses the best inverse kinematics solution from all of the solutions
 % passed in.  This decision is based both on the characteristics of the
