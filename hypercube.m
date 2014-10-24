@@ -180,20 +180,20 @@ while true
    % change the name of the second matrix and put it in the equation below.
    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
    
-  rotateMatrix = [ cos(t)  sin(t)  0  0;
-                  -sin(t)  cos(t)  0  0; % XY rotation
-                     0         0       1  0;
-                     0         0       0  1];
+%   rotateMatrix = [ cos(t)  sin(t)  0  0;
+%                   -sin(t)  cos(t)  0  0; % XY rotation
+%                      0         0       1  0;
+%                      0         0       0  1];
 
    rotateMatrix2 = [1  0    0        0;
                    0  1    0        0;    % ZW rotation
                    0  0  cos(t)  -sin(t);
                    0  0  sin(t)   cos(t)];           
                
-%    rotateMatrix = [cos(t)  0  -sin(t)  0;
-%                      0     1     0     0; % XZ rotation
-%                    sin(t)  0   cos(t)  0;
-%                      0     0     0     1];
+   rotateMatrix = [cos(t)  0  -sin(t)  0;
+                     0     1     0     0; % XZ rotation
+                   sin(t)  0   cos(t)  0;
+                     0     0     0     1];
                  
 %    rotateMatrix = [1    0     0     0;
 %                    0  cos(t)  0  -sin(t); % YW rotation
@@ -212,7 +212,9 @@ while true
    
    % Rotate and project the hypercube - put the second rotation in here if
    % needed
-   temp = mProj4to3 * rotateMatrix * rotateMatrix2 *  verts4d';
+   temp = rotateMatrix * rotateMatrix2 * verts4d';
+   temp = 5*(temp(1:3,:)./abs(3-ones(3,1)*temp(4,:)));
+   %return
   
    % Update the vertices with the rotated vectors
    set(p, 'Vertices', temp');
