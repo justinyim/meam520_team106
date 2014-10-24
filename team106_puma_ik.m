@@ -100,25 +100,6 @@ thetas = nan(6,8);
 
 thetas(1:3,1:4) = team106_inverse_position(ox, oy, oz);
 thetas(1:3,5:8) = thetas(1:3,1:4);
-%{
-% left arm
-t11 = atan2(oy, ox) - atan2(b + d, sqrt(ox^2 + oy^2 - (b + d)^2));
-
-t21 = NaN;
-t22 = NaN;
-
-t31 = NaN;
-t32 = NaN;
-
-% right arm
-t12 = atan2(oy, ox) - atan2(-(b + d), -sqrt(ox^2 + oy^2 - (b + d)^2));
-
-t23 = NaN;
-t24 = NaN;
-
-t33 = NaN;
-t34 = NaN;
-%}
 
 
 %% INVERSE ORIENTATION
@@ -147,19 +128,6 @@ for ii = 1:4
 end
 
 
-%% OUTPUT SOLUTIONS
-% all eight solutions
-% by default they are NaN
-%{
-th1 = [t11 t11 t12 t12 t11 t11 t12 t12];
-th2 = [t21 t22 t23 t24 t21 t22 t23 t24];
-th3 = [t31 t32 t33 t34 t31 t32 t33 t34];
-th4 = [t41 t41 t41 t41 t42 t42 t42 t42];
-th5 = [t51 t51 t51 t51 t52 t52 t52 t52];
-th6 = [t61 t61 t61 t61 t62 t62 t62 t62];
-%}
-
-
 %%
 % You should update this section of the code with your IK solution.
 % Please comment your code to explain what you are doing at each step.
@@ -173,10 +141,7 @@ th6 = [t61 t61 t61 t61 t62 t62 t62 t62];
 
 % Put all of the thetas into a column vector to return.
 
-% Sanitize outputs to make sure they are reachable
-% thetas = team106_sanitize_outputs([th1; th2; th3; th4; th5; th6]);
-
-%thetas = [th1; th2; th3; th4; th5; th6];
+%thetas = thetas
 
 % By the very end, each column of thetas should hold a set of joint angles
 % in radians that will put the PUMA's end-effector in the desired
