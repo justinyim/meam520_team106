@@ -1,5 +1,5 @@
 function [duration, x, y, z, phi, theta, psi, r, g, b] = team106_get_poc(t)
-%% team100_get_poc.m
+%% team106_get_poc.m
 %
 % Calculates the position, orientation, and color (poc) for the PUMA's LED
 % at the specified point in time.
