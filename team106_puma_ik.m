@@ -118,7 +118,11 @@ for ii = 1:4
 
     % calculate wrist contribution to orientation
     R36 = R30' * R;
-
+    
+    if any(any(imag(R36)))
+        thetas = NaN(6,1);
+        return
+    end
     % Find euler angles using method in section 2.5
     [thetas(4,ii), thetas(5,ii), thetas(6,ii)] = team106_inverse_euler_zyz(R36, 1);
     [thetas(4,ii+4), thetas(5,ii+4), thetas(6,ii+4)] = team106_inverse_euler_zyz(R36, 2);

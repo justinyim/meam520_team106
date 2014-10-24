@@ -78,16 +78,16 @@ thetas = thetas(:,all(~isnan(thetas)));
 
 %% Now evaluate distance metrics
 distanceMetric = @team106_distanceMetric_l2norm;
-% distanceMetric = @team106_distanceMetric_linfinitynorm;
+%distanceMetric = @team106_distanceMetric_linfinitynorm;
 
-metricOut = zeros(size(thetas,2));
+metricOut = zeros(1,size(thetas,2));
 for ii = 1:length(metricOut)
     metricOut(ii) = distanceMetric(thetas(:,ii), thetasnow);
 end
 
 
 %% Finally choose the solution and return it
-n = metricOut == min(metricOut);
+n = find(metricOut == min(metricOut),1,'first');
 thetasOut = thetas(:,n);
 
 

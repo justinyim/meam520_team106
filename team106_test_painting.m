@@ -81,7 +81,7 @@ for i = 1:length(ox_history)
         thetas_history(i,:) = team106_choose_solution(allthetas, [0 0 0 0 -pi/2 0]')';
     else        
         % Choose the solution to show.
-        thetas_history(i,:) = team106_choose_solution(allthetas, thetas_history(i-1,:))';
+        thetas_history(i,:) = team106_choose_solution(allthetas, thetas_history(i-1,:)')';
     end
 
     % Plot the robot at this IK solution with the specified color.        
