@@ -34,6 +34,47 @@ function thetas = team106_choose_solution(allSolutions, thetasnow)
 % first line above to include your team number rather than 100.
 
 
+%% Puma 260 Limit Parameters
+% note that theta4 and theta6 have greater than 360 degree range
+limits = [-180 110;...
+          -75 240;...
+          -235 60;...
+          -580 40;...
+          -120 110;...
+          -215 295];
+limits = limits.*(pi/180);
+
+%%
+% first wrap solutions with less than 360 range into range
+for ii = 1:size(allSolutions,2)
+    for jj = [1 2 3 5]
+        while (allSolutions(jj, ii) < limits(jj,1))
+            allSolutions(jj, ii) = allSolutions(jj, ii) + 2*pi;
+        end
+        while (allSolutions(jj, ii) > limits(jj, 2))
+            allSolutions(jj, ii) = allSolutions(jj, ii) - 2*pi;
+        end
+    end
+end
+
+% now add solutions due to extra range for theta4/6
+temp1 = allSolutions;
+temp2 = allSolutions;
+
+temp1([4,6],:) = temp1([4,6],:) + 2*pi;
+temp2([4,6],:) = temp2([4,6],:) - 2*pi;
+
+allSolutions = [allSolutions temp1 temp2];
+
+
+%% NaN solutions outside of limits
+allSolutions = team106_sanitize_outputs(allSolutions);
+
+
+%% 
+
+
+
 % You will need to update this function so it chooses intelligently from
 % the provided solutions to choose the best one.
 %
