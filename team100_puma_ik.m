@@ -4,7 +4,7 @@ function thetas = team100_puma_ik(x, y, z, phi, theta, psi)
 % Calculates the full inverse kinematics for the PUMA 260.
 %
 % This Matlab file provides the starter code for the PUMA 260 inverse
-% kinematics function of project 1 in MEAM 520 at the University of
+% kinematics function of Project 1 in MEAM 520 at the University of
 % Pennsylvania.  The original was written by Professor Katherine J.
 % Kuchenbecker. Students will work in teams modify this code to create
 % their own script. Post questions on the class's Piazza forum. 
@@ -38,9 +38,6 @@ function thetas = team100_puma_ik(x, y, z, phi, theta, psi)
 % order, zeroing, and sign conventions described in the documentation.  If
 % this function cannot find a solution to the inverse kinematics problem,
 % it will pass back NaN (not a number) for all of the thetas.
-%
-% Please change the name of this file and the function declaration on the
-% first line above to include your team number rather than 100.
 
 
 %% CHECK INPUTS
@@ -59,27 +56,20 @@ end
 
 %% CALCULATE INVERSE KINEMATICS SOLUTION(S)
 
-% For now, just set the first solution to NaN (not a number) and the second
-% to zero radians.  You will need to update this code.
-% NaN is what you should output if there is no solution to the inverse
-% kinematics problem for the position and orientation that were passed in.
-% For example, this would be the correct output if the desired position for
-% the end-effector was outside the robot's reachable workspace.  We use
-% this sentinel value of NaN to be sure that the code calling this function
-% can tell that something is wrong and shut down the PUMA.
-th1 = [NaN 0];
-th2 = [NaN 0];
-th3 = [NaN 0];
-th4 = [NaN 0];
-th5 = [NaN 0];
-th6 = [NaN 0];
+% For now, just set the solution to the home position.
+th1 = 0;
+th2 = 0;
+th3 = 0;
+th4 = 0;
+th5 = -pi/2;
+th6 = 0;
 
-% You should update this section of the code with your IK solution.
-% Please comment your code to explain what you are doing at each step.
-% Feel free to create additional functions as needed - please name them all
-% to start with team1XX_, where 1XX is your team number.  For example, it
-% probably makes sense to handle inverse position kinematics and inverse
-% orientation kinematics separately.
+% So that we can see the robot move, change th1 to pertain to the
+% y-coordinate that was passed in. 
+th1 = (y - 5) / 10;
+
+% And change th2 to pertain to the z-coordinate that was passed in.
+th2 = (z - 21) / 10;
 
 
 %% FORMAT OUTPUT
