@@ -126,7 +126,7 @@ if (nargin == 16)
     % If the color is not black, add this tip position to the plot.
     if (((redValue ~= 0) || (greenValue ~= 0)) || blueValue ~= 0)
         hold on
-        plot3(o6(1),o6(2),o6(3),'.','color',[redValue greenValue blueValue],'markersize',25);
+        plot3(o6(1),o6(2),o6(3),'.','color',[redValue greenValue blueValue],'markersize',5);
         hold off
     end
     

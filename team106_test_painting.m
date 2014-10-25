@@ -15,7 +15,7 @@ clc
 
 % Set whether to animate the robot's movement and how much to slow it down.
 pause on;  % Set this to off if you don't want to watch the animation.
-GraphingTimeDelay = 0.05; % The length of time that Matlab should pause between positions when graphing, if at all, in seconds.
+GraphingTimeDelay = 0;%0.05; % The length of time that Matlab should pause between positions when graphing, if at all, in seconds.
 
 
 %% CREATE JOINT ANGLE SEQUENCE
@@ -29,7 +29,7 @@ GraphingTimeDelay = 0.05; % The length of time that Matlab should pause between 
 duration = team106_get_poc();
 
 % Create time vector.
-tstep = 0.1; % s
+tstep = 0.2;%0.1; % s
 t = 0:tstep:duration;
 
 % Step through the time vector, filling the histories by calling
@@ -52,6 +52,7 @@ disp('Click in this window and press control-c to stop the code.')
 % Plot the robot once in the home position to get the plot handles.
 figure(1); clf
 h = plot_puma_kuchenbe(0,0,0,0,0,0,0,0,0,0,-pi/2,0,0,0,0);
+set(gca,'cameraposition',[100,0,0])
 
 % Step through the ox_history vector to test the inverse kinematics.
 for i = 1:length(ox_history)
@@ -98,6 +99,8 @@ for i = 1:length(ox_history)
 
     % Pause for a short duration so that the viewer can watch animation evolve over time.
     pause(GraphingTimeDelay)
+   
+    drawnow
     
 end
 

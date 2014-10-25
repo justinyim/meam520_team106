@@ -14,6 +14,9 @@ e = 8;
 %Theta 1
 phi1 = atan2(y,x);
 r = sqrt(x^2 + y^2 - (b+d)^2);
+if imag(r)
+    error('Unreachable desired pose: position unreachable')
+end
 alpha1 = atan2(b+d,r);
 
 thetas(1,1) = phi1-alpha1; %left, down
