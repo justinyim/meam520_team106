@@ -120,8 +120,7 @@ for ii = 1:4
     R36 = R30' * R;
     
     if any(any(imag(R36)))
-        thetas = NaN(6,1);
-        return
+        error('Unreachable desired pose, no solutions to IK: outside of workspace')
     end
     % Find euler angles using method in section 2.5
     [thetas(4,ii), thetas(5,ii), thetas(6,ii)] = team106_inverse_euler_zyz(R36, 1);

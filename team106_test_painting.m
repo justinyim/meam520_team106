@@ -8,7 +8,7 @@
 %% SETUP
 
 % Clear all variables from the workspace.
-clear all
+%clear all
 
 % Clear the console, so you can more easily find any errors that may occur.
 clc
@@ -81,6 +81,10 @@ for i = 1:length(ox_history)
         thetas_history(i,:) = team106_choose_solution(allthetas, [0 0 0 0 -pi/2 0]')';
     else        
         % Choose the solution to show.
+        if isempty(team106_choose_solution(allthetas, thetas_history(i-1,:)')')
+            disp('asldkfjalsdf')
+            disp('eiwopqiefad')
+        end
         thetas_history(i,:) = team106_choose_solution(allthetas, thetas_history(i-1,:)')';
     end
 

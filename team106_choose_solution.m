@@ -72,6 +72,14 @@ temp2(6,:) = temp2(6,:) - 2*pi;
 % NaN solutions outside of limits
 thetas = team106_sanitize_outputs([allSolutions temp1 temp2 temp3 temp4]);
 
+if all(all(isnan(thetas)))
+    disp(rad2deg(allSolutions))
+    disp(rad2deg(limits))
+    disp(allSolutions < limits(:,1)*ones(1,size(allSolutions,2)))
+    disp(allSolutions > limits(:,2)*ones(1,size(allSolutions,2)))
+    error('No solutions within joint limits')
+end
+
 % remove NaN columns
 thetas = thetas(:,all(~isnan(thetas)));
 
