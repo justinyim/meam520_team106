@@ -143,8 +143,13 @@ clear cdata;
 set(gca,'CLim',[0 80]);
 %cdata = [0 0 0 0 0 0  80 80 80 80 80 80  10 10 10 10 10 10  20 20 20 20 20 20  30 30 30 30 30 30  40 40 40 40 40 40  50 50 50 50 50 50  60 60 60 60 60 60];
 %cdata = [40 40 40 40 40 40  40 40 40 40 40 40  10 10 10 10 10 10  40 40 40 40 40 40  40 40 40 40 40 40  40 40 40 40 40 40  40 40 40 40 40 40  40 40 40 40 40 40];
-cdata = [40 40 40 40 40 40  40 40 40 40 40 40   40 40 40 40 40 40  40 40 40 40 40 40  40 40 40 40 40 40  40 40 40 40 40 40  40 40 40 40 40 40  40 40 40 40 40 40];
-set(p,'FaceColor','flat','CData',cdata);
+%cdata = [40 40 40 40 40 40  40 40 40 40 40 40   40 40 40 40 40 40  40 40 40 40 40 40  40 40 40 40 40 40  40 40 40 40 40 40  40 40 40 40 40 40  40 40 40 40 40 40];
+%set(p,'FaceColor','flat','CData',cdata);
+
+cdata = [10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10;
+         200 200 200 200 200 200 200 200 200 200 200 200 200 200 200 200 200;
+         40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40];
+set(p,'cdata',cdata','facevertexcdata',cdata')
 
 % Set camera position and target manually
 %campos([7, -7, 3]);
@@ -163,10 +168,10 @@ t = 0;
 %%%%%%%%%%%%%%%%%%% Rotate cube %%%%%%%%%%%%%%%%%%%%
 % PRESS CTRL-C TO STOP
 
-while true
+for ii = 1:20
    % increase parameter t. when it exceeds 2 * pi, revert it to 0 to
    % prevent overflow
-   t = t + pi / 120;
+   t = t + pi / 40;
    if t >= 2 * pi
        t = 0;
    end
@@ -180,20 +185,22 @@ while true
    % change the name of the second matrix and put it in the equation below.
    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
    
-%   rotateMatrix = [ cos(t)  sin(t)  0  0;
-%                   -sin(t)  cos(t)  0  0; % XY rotation
-%                      0         0       1  0;
-%                      0         0       0  1];
+  rotateMatrix = [ cos(t)  sin(t)  0  0;
+                  -sin(t)  cos(t)  0  0; % XY rotation
+                     0         0       1  0;
+                     0         0       0  1];
+
+%   rotateMatrix = eye(4);% no rotation
 
    rotateMatrix2 = [1  0    0        0;
                    0  1    0        0;    % ZW rotation
                    0  0  cos(t)  -sin(t);
                    0  0  sin(t)   cos(t)];           
                
-   rotateMatrix = [cos(t)  0  -sin(t)  0;
-                     0     1     0     0; % XZ rotation
-                   sin(t)  0   cos(t)  0;
-                     0     0     0     1];
+%    rotateMatrix = [cos(t)  0  -sin(t)  0;
+%                      0     1     0     0; % XZ rotation
+%                    sin(t)  0   cos(t)  0;
+%                      0     0     0     1];
                  
 %    rotateMatrix = [1    0     0     0;
 %                    0  cos(t)  0  -sin(t); % YW rotation
@@ -222,4 +229,5 @@ while true
    % Redraw
    refreshdata;
    drawnow;
+   pause(0.01)
 end

@@ -6,18 +6,20 @@ figure(1);
 hold on;
 
 %%
+t = 1;
 
-for ii = 1:size(traversal,1)
-    n1 = traversal(ii,2);
-    n2 = traversal(ii,3);
-    
-    p1 = coords(n1, 2:end);
-    p2 = coords(n2, 2:end);
-    
-    p1_3 = 5*p1(1:3)./abs(3-ones(1,3)*p1(4));
-    p2_3 = 5*p2(1:3)./abs(3-ones(1,3)*p2(4));
-    
-    edge = [p1_3; p2_3];
-    
-    plot3(edge(:,1), edge(:,2), edge(:,3), 'b-');
-end
+rotMat1 = [ cos(t)  sin(t)  0  0;
+          -sin(t)  cos(t)  0  0; % XY rotation
+             0         0       1  0;
+             0         0       0  1];
+
+rotMat2 = [1  0    0        0;
+           0  1    0        0;    % ZW rotation
+           0  0  cos(t)  -sin(t);
+           0  0  sin(t)   cos(t)];  
+
+points = coords([traversal(1,2);traversal(:,3)],2:end)';
+rot_points = rotMat1*rotMat2*points;
+points3 = 2*rot_points(1:3,:)./abs(3-ones(3,1)*rot_points(4,:));
+plot3(points3(1,:),points3(2,:),points3(3,:),'b-')
+axis equal
