@@ -41,8 +41,8 @@ save(['team106_' sprintf('%02d', kk) '.mat'],'painting');
 save('team106.mat','painting');
 kk = kk + 1;
 
-% team106_test_painting;
-team106_puma_paint;
+team106_test_painting;
+% team106_puma_paint;
 
 pic = getframe(gcf);
 h_avi.writeVideo(pic);

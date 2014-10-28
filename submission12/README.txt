@@ -38,6 +38,10 @@ team106_puma_paint.m
 
 team106_generate_puma_frames.m
     This file is the framework by which our work can be tested.  
+
+    It generates .mat frames using a minimum time traversal order, i.e. we
+    proved that there exists a traversal in a 4-connected graph where each
+    edge is traversed once.  One such traversal is used here.  
     
     This script
     (a) generates a 4D cube
@@ -75,6 +79,8 @@ How to Run
 
 (1) open team106_generate_puma_frames.m
 (2) optionally change line 44/45 to use team106_test_painting or team106_puma_paint
+	NOTE: puma_paint takes about 20 minutes to run
+	      test_painting takes maybe 5 minutes
 (3) run via F5 or equivalent
 (4) enjoy
 
